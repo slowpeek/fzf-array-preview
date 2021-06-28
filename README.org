@@ -1,0 +1,37 @@
+* What
+
+This is a bash function to render arrays with =fzf='s preview
+feature. You get keys to filter and corresponding value in the preview
+pane.
+
+The generic idea is taken from [[https://www.reddit.com/r/bash/comments/o9djvn/arrays_with_fzf/h3alju1][this]] reddit comment.
+
+* Usage
+
+Require the script in your code once. After that call
+=fzf_array_preview= function with a var name as argument any time:
+
+#+begin_src bash
+  source fzf-array-preview.sh
+
+  a=(1 2 3 4)                     # generic array
+  fzf_array_preview a
+
+  unset a[2]                      # make it sparse
+  fzf_array_preview a
+
+  declare -A b=([who]=pronoun [is]=verb [that]=determiner)
+  fzf_array_preview b
+#+end_src
+
+Assoc arrays in bash has no defined key order. To make things clear
+the keys are sorted before rendering.
+
+* Demo
+
+A demo script is provided as well to show rendering of generic, sparse
+and assoc arrays.
+
+* License
+
+[[https://en.wikipedia.org/wiki/MIT_License][MIT License]] all the way.
