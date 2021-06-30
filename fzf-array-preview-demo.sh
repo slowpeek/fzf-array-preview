@@ -127,7 +127,7 @@ for el in "${demos[@]%%:*}"; do
 done
 
 # shellcheck disable=SC2034
-typeset +n var
+declare +n var
 unset -v var
 
 PS3=$'\n-----\nq Quit\n-----\n\nMenu item: '
