@@ -118,7 +118,6 @@ demos=(
     'rsq:number => its root'   # sparse array
     'cc2c:country code => country' # assoc
     'c2cc:country => country code' # assoc
-    'q:quit'
 )
 
 n=0
@@ -131,8 +130,19 @@ done
 typeset +n var
 unset -v var
 
-# shellcheck disable=SC2154,SC2034
-select name in "${demos[@]#*:}"; do
+PS3=$'\n-----\nq Quit\n-----\n\nMenu item: '
+
+# shellcheck disable=SC2034,SC2154
+while true; do
+    clear -x
+    printf '%s demo\n\n' "$req"
+
+    select dummy in "${demos[@]#*:}"; do
+        break
+    done <<< dummy
+
+    read -r
+
     case $REPLY in
         "$demo_sq")
             sq=()
@@ -170,7 +180,7 @@ select name in "${demos[@]#*:}"; do
             fzf_array_preview c2cc
             unset -v c2cc
             ;;
-        "$demo_q")
+        [qQ])
             break
             ;;
     esac
