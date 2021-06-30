@@ -52,6 +52,11 @@ fzf_array_preview () {
         return 1
     fi
 
+    if [[ $fzfap_def == "$1=()" ]]; then
+        echo "'$1' is empty" >&2
+        return 1
+    fi
+
     # Use some safe var name in $fzfap_def instead of raw $1. For
     # example $BASH_VERSINFO is always set and is readonly hence
     # trying to declare it below in fzf call would fail.
