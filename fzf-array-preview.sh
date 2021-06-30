@@ -57,6 +57,11 @@ fzf_array_preview () {
         return 1
     fi
 
+    local fzfap_header
+    [[ ! $fzfap_type == *A* ]] || fzfap_header='assoc '
+
+    fzfap_header+="array '$1'"
+
     # Use some safe var name in $fzfap_def instead of raw $1. For
     # example $BASH_VERSINFO is always set and is readonly hence
     # trying to declare it below in fzf call would fail.
@@ -64,7 +69,7 @@ fzf_array_preview () {
     local -n fzfap_var=$1
 
     printf '%s\0' "${!fzfap_var[@]}" | sort -Vz |\
-        fzf -e --read0 --reverse --preview \
+        fzf --header="$fzfap_header" -e --read0 --reverse --preview \
             "$fzfap_def; printf '%s\n' \"\${fzfap_it[{}]}\""
 
     return 0
