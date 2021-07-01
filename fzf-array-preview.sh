@@ -70,7 +70,7 @@ fzf_array_preview () {
 
     printf '%s\0' "${!fzfap_var[@]}" | sort -Vz |\
         fzf --header="$fzfap_header" -e --read0 --reverse --preview \
-            "$fzfap_def; printf '%s\n' \"\${fzfap_it[{}]}\""
+            "$fzfap_def; printf '%s\n' \"\${fzfap_it[{}]}\"" >/dev/null
 
     return 0
 }
