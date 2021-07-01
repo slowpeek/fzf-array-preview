@@ -27,6 +27,12 @@ Require the script in your code once. After that call
 Assoc arrays in bash has no defined key order. To make things clear
 the keys are sorted before rendering.
 
+Autocomplete array var names in an interactive shell:
+
+#+begin_src bash
+complete -A arrayvar fzf_array_preview
+#+end_src
+
 * Demo
 
 A demo script is provided as well to show rendering of generic, sparse
