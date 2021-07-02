@@ -1,4 +1,5 @@
 # -*- mode: sh; sh-shell: bash; -*-
+# shellcheck shell=bash
 
 # Copyright (c) 2021 https://github.com/slowpeek
 #
