@@ -123,12 +123,11 @@ demos=(
 n=0
 for el in "${demos[@]%%:*}"; do
     declare -n var=demo_$el
+    # shellcheck disable=SC2034
     var=$((++n))
 done
 
-# shellcheck disable=SC2034
-declare +n var
-unset -v var
+unset -n var
 
 PS3=$'\n-----\nq Quit\n-----\n\nMenu item: '
 
