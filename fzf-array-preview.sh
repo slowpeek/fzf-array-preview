@@ -32,6 +32,7 @@
 #
 # The generic idea is taken from this reddit comment
 # https://www.reddit.com/r/bash/comments/o9djvn/arrays_with_fzf/h3alju1
+
 fzf_array_preview () {
     if (($# < 1)); then
         echo "${FUNCNAME[0]} requires a var name argument" >&2
