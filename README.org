@@ -37,7 +37,3 @@ complete -A arrayvar fzf_array_preview
 
 A demo script is provided as well to show rendering of generic, sparse
 and assoc arrays.
-
-* License
-
-[[https://en.wikipedia.org/wiki/MIT_License][MIT License]] all the way.
