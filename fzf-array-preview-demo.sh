@@ -86,7 +86,8 @@ bye () {
     exit 1
 }
 
-hash fzf 2>/dev/null || bye "'fzf' tool not found"
+
+type -P fzf >/dev/null || bye "'fzf' tool not found"
 
 req=fzf-array-preview.sh
 # shellcheck disable=SC1090
