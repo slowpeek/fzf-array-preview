@@ -115,9 +115,9 @@ while true; do
     clear -x
     printf '%s demo\n\n' "$req"
 
-    select dummy in "${demos[@]#*:}"; do
+    select _ in "${demos[@]#*:}"; do
         break
-    done <<< dummy
+    done <<< a
 
     read -r
 
