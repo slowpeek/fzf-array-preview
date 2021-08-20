@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2191,SC1090
 
 # MIT license (c) 2021 https://github.com/slowpeek
 # Homepage: https://github.com/slowpeek/fzf-array-preview
 
+set -eu
+
+self=${BASH_SOURCE[0]%/*}
+! test -f "$self"/locate-exit.sh || source "$_"
+
 countries=(
-
-"AUT=Austria" "BEL=Belgium" "BGR=Bulgaria" "HRV=Croatia" "CYP=Cyprus"
-"CZE=Czech Republic" "DNK=Denmark" "EST=Estonia" "FIN=Finland"
-"FRA=France" "DEU=Germany" "GRC=Greece" "HUN=Hungary" "IRL=Ireland"
-"ITA=Italy" "LVA=Latvia" "LTU=Lithuania" "LUX=Luxembourg" "MLT=Malta"
-"NLD=Netherlands" "POL=Poland" "PRT=Portugal" "ROM=Romania"
-"SVK=Slovakia" "SVN=Slovenia" "ESP=Spain" "SWE=Sweden"
-
+    "AUT=Austria" "BEL=Belgium" "BGR=Bulgaria" "HRV=Croatia"
+    "CYP=Cyprus" "CZE=Czech Republic" "DNK=Denmark" "EST=Estonia"
+    "FIN=Finland" "FRA=France" "DEU=Germany" "GRC=Greece"
+    "HUN=Hungary" "IRL=Ireland" "ITA=Italy" "LVA=Latvia"
+    "LTU=Lithuania" "LUX=Luxembourg" "MLT=Malta" "NLD=Netherlands"
+    "POL=Poland" "PRT=Portugal" "ROM=Romania" "SVK=Slovakia"
+    "SVN=Slovenia" "ESP=Spain" "SWE=Sweden"
 )
 
 # Remove line breaks.
@@ -25,58 +30,65 @@ bye () {
 type -P fzf >/dev/null || bye "'fzf' tool not found"
 
 req=fzf-array-preview.sh
-# shellcheck disable=SC1090
-source "$req" 2>/dev/null || bye "'$req' not found"
+source "$self/$req" 2>/dev/null || bye "'$req' not found"
 
 demos=(
-    'sq:number => its square'  # array
-    'rsq:number => its root'   # sparse array
-    'cc2c:country code => country' # assoc
-    'c2cc:country => country code' # assoc
+    '  sq generic ::       number => its square'   # array
+    ' rsq sparse  ::       number => its root'     # sparse array
+    'cc2c assoc   :: country code => country'      # assoc
+    'c2cc assoc   ::      country => country code' # assoc
 )
 
-n=0
-for el in "${demos[@]%%:*}"; do
-    declare -n var=demo_$el
-    # shellcheck disable=SC2034
-    var=$((++n))
-done
+name=${req%%.*}
 
-unset -n var
+header="
+quit with Esc or Ctl-C
+----------------------
 
-PS3=$'\n-----\nq Quit\n-----\n\nMenu item: '
+${name^^} DEMO
 
-# shellcheck disable=SC2034,SC2154
+"
+
+header=${header:1}
+
+clear
 while true; do
-    clear -x
-    printf '%s demo\n\n' "$req"
 
-    select _ in "${demos[@]#*:}"; do
-        break
-    done <<< a
+    fzf_args=(
+        --phony
+        --with-nth=2..
+        --header="$header"
+        --prompt=''
+        --reverse
+        --no-info
+        --bind=change:clear-query
+        --border
+    )
 
-    read -r
+    read -r reply _ < \
+         <(printf '%s\n' "${demos[@]}" | fzf "${fzf_args[@]}") || true
 
-    case $REPLY in
-        "$demo_sq")
+    # shellcheck disable=SC2034
+    case $reply in
+        sq)
             sq=()
-            for ((i=0; i<=100; i++)); do
-                sq[i]=$((i*i))
+            for ((i=1; i<=100; i++)); do
+                ((sq[i] = i*i))
             done
 
             fzf_array_preview sq
             unset -v sq
             ;;
-        "$demo_rsq")
+        rsq)
             rsq=()
-            for ((i=0; i<=100; i++)); do
-                rsq[i*i]=$i
+            for ((i=1; i<=100; i++)); do
+                ((rsq[i*i] = i))
             done
 
             fzf_array_preview rsq
             unset -v rsq
             ;;
-        "$demo_cc2c")
+        cc2c)
             declare -A cc2c=()
             for s in "${countries[@]}"; do
                 cc2c[${s%%=*}]=${s##*=}
@@ -85,7 +97,7 @@ while true; do
             fzf_array_preview cc2c
             unset -v cc2c
             ;;
-        "$demo_c2cc")
+        c2cc)
             declare -A c2cc=()
             for s in "${countries[@]}"; do
                 c2cc[${s##*=}]=${s%%=*}
@@ -94,7 +106,7 @@ while true; do
             fzf_array_preview c2cc
             unset -v c2cc
             ;;
-        [qQ])
+        *)
             break
             ;;
     esac
