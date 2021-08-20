@@ -49,21 +49,21 @@ ${name^^} DEMO
 
 "
 
-header=${header:1}
+fzf_args=(
+    --phony
+    --with-nth=2..
+    --header="${header:1}"
+    --prompt=''
+    --reverse
+    --no-info
+    --bind=change:clear-query
+    --border
+)
+
+unset -v name header
 
 clear
 while true; do
-    fzf_args=(
-        --phony
-        --with-nth=2..
-        --header="$header"
-        --prompt=''
-        --reverse
-        --no-info
-        --bind=change:clear-query
-        --border
-    )
-
     read -r reply _ < \
          <(printf '%s\n' "${demos[@]}" | fzf "${fzf_args[@]}") || true
 
