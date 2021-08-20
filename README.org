@@ -1,8 +1,8 @@
-* What
+* About
 
 This is a bash function to render arrays with =fzf='s preview
-feature. You get keys to filter and corresponding value in the preview
-pane.
+feature. You get keys to filter and corresponding values in the
+preview pane.
 
 The generic idea is taken from [[https://www.reddit.com/r/bash/comments/o9djvn/arrays_with_fzf/h3alju1][this]] reddit comment.
 
@@ -30,7 +30,7 @@ the keys are sorted before rendering.
 Autocomplete array var names in an interactive shell:
 
 #+begin_src bash
-complete -A arrayvar fzf_array_preview
+  complete -A arrayvar fzf_array_preview
 #+end_src
 
 * Demo
