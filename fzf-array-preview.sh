@@ -23,7 +23,7 @@ fzf_array_preview () {
     # of shadowing the var name passed as $1. Let it be 'fzfap_'.
     local fzfap_type fzfap_def
 
-    if ! read -r fzfap_type fzfap_type fzfap_def < <(declare -p "$1" 2>/dev/null); then
+    if ! read -r _ fzfap_type fzfap_def < <(declare -p "$1" 2>/dev/null); then
         echo "${FUNCNAME[0]}: '$1' is not defined" >&2
         return 1
     fi
@@ -40,7 +40,6 @@ fzf_array_preview () {
 
     local fzfap_header
     [[ ! $fzfap_type == *A* ]] || fzfap_header='assoc '
-
     fzfap_header+="array '$1'"
 
     # Use some safe var name in $fzfap_def instead of raw $1. For
@@ -51,7 +50,7 @@ fzf_array_preview () {
 
     printf '%s\0' "${!fzfap_var[@]}" | sort -Vz |\
         fzf --header="$fzfap_header" -e --read0 --reverse --preview \
-            "$fzfap_def; printf '%s\n' \"\${fzfap_it[{}]}\"" >/dev/null
+            "$fzfap_def; printf '%s\n' \"\${fzfap_it[{}]}\"" >/dev/null || true
 
     return 0
 }
