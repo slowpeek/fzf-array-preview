@@ -53,7 +53,6 @@ header=${header:1}
 
 clear
 while true; do
-
     fzf_args=(
         --phony
         --with-nth=2..
