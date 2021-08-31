@@ -7,7 +7,7 @@
 set -eu
 
 self=${BASH_SOURCE[0]%/*}
-! test -f "$self"/locate-exit.sh || source "$_"
+! test -f "$self"/dev/main.sh || source "$_"
 
 countries=(
     "AUT=Austria" "BEL=Belgium" "BGR=Bulgaria" "HRV=Croatia"
